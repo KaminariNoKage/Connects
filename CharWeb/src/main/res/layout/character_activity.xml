@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/charName"
+        android:text="@string/tempText"
+        android:textSize="@dimen/largeText"
+        android:layout_centerHorizontal="true"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width = "fill_parent"
+        android:layout_height = "2dp"
+        android:background = "@color/char_blue"
+        android:layout_below="@+id/charName"
+        />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchResults"
+        android:layout_below="@+id/line"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>

@@ -20,11 +20,12 @@ import java.util.List;
 public class AllCharFragment extends Fragment {
 
     public List<Character> allChar;
+    public Book curBook;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        allChar = MainActivity.getMyBookChar();
+        allChar = Book.bookToChar(curBook.allCharaters);
 
     }
 
@@ -39,6 +40,7 @@ public class AllCharFragment extends Fragment {
         ListView charList = (ListView) v.findViewById(R.id.characterResults);
         charList.setAdapter(charListAdapter);
 
+        System.out.println("PAGE LOADED");
         charList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

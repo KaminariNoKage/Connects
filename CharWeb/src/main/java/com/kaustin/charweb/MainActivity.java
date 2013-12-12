@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,17 +19,27 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     public static Book myBook;
+    public static CharDBHelper myDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Database
+        myDBHelper = new CharDBHelper(this);
+
+
         //Dummy Data
         myBook = new Book("myBook");
-        myBook.allCharaters.put("Kai", new Character("Kai"));
-        myBook.allCharaters.put("Domian", new Character("Domian"));
-        myBook.allCharaters.put("Austin", new Character("Austin"));
+        myDBHelper.addCharacter("Kai", myBook);
+        myDBHelper.addCharacter("Domian", myBook);
+        myDBHelper.addCharacter("Austin", myBook);
+
+        //Dummy Data
+        try{
+            myBook.getBookFromDB();
+        }catch (Exception E) { System.out.println("MainActivity -> Unhandled JSON Error"); }
 
         // Define view fragments
         AllCharFragment charFragment = new AllCharFragment();
@@ -71,6 +83,10 @@ public class MainActivity extends Activity {
             case R.id.action_settings:
                 showAddDialog();
                 return true;
+            case R.id.action_sync:
+                //LOG IN TO DATABASE
+                //SYNC DATA
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -81,17 +97,5 @@ public class MainActivity extends Activity {
     public static Book getMyBook(){
         return myBook;
     }
-    public static ArrayList<Character> getMyBookChar(){
-        return bookToChar(myBook.allCharaters);
-    }
 
-    public static ArrayList<Character> bookToChar(HashMap<String, Character> bookCharacters){
-        //For rendering purposes, converting HashMap to ArrayList
-        ArrayList<Character> nuCharList = new ArrayList<Character>();
-        //Getting all the characters of the book and putting them into list
-        for (String key : bookCharacters.keySet()) {
-            nuCharList.add(bookCharacters.get(key));
-        }
-        return nuCharList;
-    }
 }

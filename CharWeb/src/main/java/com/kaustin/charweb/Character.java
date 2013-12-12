@@ -2,6 +2,8 @@ package com.kaustin.charweb;
 
 import android.widget.ArrayAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,13 +13,14 @@ import java.util.HashMap;
 public class Character {
 
     String name;
-    HashMap<String, String[]> relationships;
+    JSONObject relationships;
 
     public Character(String name){
         this.name = name;
-        this.relationships = new HashMap<String, String[]>();
+        this.relationships = new JSONObject();
     }
 
+    /*
     public void addRelation(String rName, String rType){
         if (!this.inRelation(rName)){
             //If not in the HashMap, then add it
@@ -46,5 +49,5 @@ public class Character {
             return true;
         }
         return false;
-    }
+    }*/
 }

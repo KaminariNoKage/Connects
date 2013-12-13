@@ -21,7 +21,7 @@ public class DigParser {
         // EG: A >> B becomes [A,B]
 
         //Getting the current character
-        Character curchar = curbook.allCharaters.get(charNew[0]);
+        //Character curchar = curbook.allCharaters.get(charNew[0]);
 
         //Check if the character is in the HM
         //If so, then parse rest of character stuff

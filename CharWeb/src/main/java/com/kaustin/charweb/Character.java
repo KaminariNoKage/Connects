@@ -2,6 +2,7 @@ package com.kaustin.charweb;
 
 import android.widget.ArrayAdapter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,34 +21,35 @@ public class Character {
         this.relationships = new JSONObject();
     }
 
-    /*
-    public void addRelation(String rName, String rType){
-        if (!this.inRelation(rName)){
-            //If not in the HashMap, then add it
-            this.relationships.put(rName, new String[2]);
-        }
-        //Then add the new relation
 
-        //this.relationships.get(rName) = rType;
-    }
+    /***
+     * UTILITY FUNCTIONS for working with relationships
+     * NOTE: Any edits to a relationship permanently replaces them.
+     * ***/
 
-    public void editRelation(String rName, String[] rType){
-        this.relationships.put(rName, rType);
-    }
-
-    public void deleteRelation(String rName){
-        if (this.inRelation(rName)){
-            //If not in the HashMap, then add it
-            this.relationships.remove(rName);
+    public void addRelation(Relation nuRel) throws JSONException{
+        if (!this.inRelation(nuRel.charName)){
+            //If not in the JSONOnject, then add it
+            this.relationships.put(nuRel.charName, nuRel);
         }
     }
+    public void editRelation(Relation nuRel) throws JSONException{
+        //Replace existing relationship
+        this.relationships.put(nuRel.charName, nuRel);
+    }
 
-    public boolean inRelation(String rName){
-        //Basic function to check if relation in Relationship HashMap
-        String[] relationType = this.relationships.get(rName);
+    public void deleteRelation(String delRelName) throws JSONException{
+        if (this.inRelation(delRelName)){
+            this.relationships.remove(delRelName);
+        }
+    }
+
+    public boolean inRelation(String relationName)throws JSONException {
+        //Basic function to check if relation in Relationship JSON
+        Object relationType = this.relationships.get(relationName);
         if (relationType != null){
             return true;
         }
         return false;
-    }*/
+    }
 }

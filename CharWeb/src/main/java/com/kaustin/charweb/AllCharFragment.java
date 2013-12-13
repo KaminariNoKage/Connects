@@ -19,13 +19,15 @@ import java.util.List;
  */
 public class AllCharFragment extends Fragment {
 
-    public List<Character> allChar;
+    public List<String> allChar;
     public Book curBook;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        allChar = Book.bookToChar(curBook.allCharaters);
+        try {
+            allChar = curBook.bookToChar();
+        }catch (Exception E){ System.out.println("CANNOT CONVERT BOOK TO LIST"); }
 
     }
 

@@ -63,6 +63,7 @@ public class CharDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_CHARACTERS);
         db.execSQL(CREATE_TABLE_USER);
+        System.out.println("DATABASES CREATED");
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -97,7 +98,6 @@ public class CharDBHelper extends SQLiteOpenHelper {
 
         // insert row
         long newRowId = db.insert(FeedEntry.TABLE_CHARACTERS, null, values);
-        Log.v("ROW ID: ", "" + newRowId);
     }
     public Cursor getCharatcer(String name){
         //Getting the query of the specified character

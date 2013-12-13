@@ -3,9 +3,12 @@ package com.kaustin.charweb;
 import android.database.Cursor;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by kaustin on 12/5/13.
@@ -13,31 +16,49 @@ import java.util.HashMap;
 public class Book {
 
     String name;
-    HashMap<String, Character> allCharaters;
+    JSONObject allCharaters;
 
     public Book(String name){
         this.name = name;
-        this.allCharaters = new HashMap<String, Character>();
+        this.allCharaters = new JSONObject();
     }
 
-    public void getBookFromDB() throws JSONException{
-        //Takes in an array of JSON data from the Database and converts it to hashmap of characters
-        Cursor bookDB = MainActivity.myDBHelper.getBook(this.name);
-         bookDB.moveToFirst();
-        for(int i=0; i < bookDB.getCount(); i++){
-            Character nuChar = new Character(bookDB.getString(1));
-            nuChar.relationships = MainActivity.myDBHelper.stringToJSON(bookDB.getString(3));
-            this.allCharaters.put(nuChar.name, nuChar);
-        }
+    public void printBook(){
+        System.out.println("BOOK NAME: " + this.name);
+        String data = MainActivity.myDBHelper.jsonToString(this.allCharaters);
+        System.out.println("DATA: " + data);
     }
 
-    public static ArrayList<Character> bookToChar(HashMap<String, Character> bookCharacters){
-        //For rendering purposes, converting HashMap to ArrayList
-        ArrayList<Character> nuCharList = new ArrayList<Character>();
+    //Convert the characters in the book to an ArrayList for the main page
+    public List<String> bookToChar()throws JSONException {
+        //For rendering purposes, converting JSONObject to ArrayList
+        List<String> nuCharList = new ArrayList<String>();
         //Getting all the characters of the book and putting them into list
-        for (String key : bookCharacters.keySet()) {
-            nuCharList.add(bookCharacters.get(key));
+        JSONObject tChar = this.allCharaters;
+        Iterator<String> iter = tChar.keys();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            nuCharList.add(key);
         }
         return nuCharList;
     }
+
+    /***
+     * Utility functions for the book to handle characters
+     * @param name = Names of the character
+     * @throws JSONException
+     ***/
+
+    //ADD CHARACTERS TO THE BOOK
+    public void addCharacter(String name) throws JSONException{
+        //Note, new characters will have no relations
+        Character nuChar = new Character(name);
+        this.allCharaters.put(name, nuChar);
+    }
+
+    //DELETE CHARACTERS IN THE BOOK
+    public void delCharacter(String name) throws JSONException{
+        this.allCharaters.remove(name);
+    }
+
 }

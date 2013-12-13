@@ -3,6 +3,7 @@ package com.kaustin.charweb;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,14 +33,21 @@ public class MainActivity extends Activity {
 
         //Dummy Data
         myBook = new Book("myBook");
-        myDBHelper.addCharacter("Kai", myBook);
-        myDBHelper.addCharacter("Domian", myBook);
-        myDBHelper.addCharacter("Austin", myBook);
+        //myDBHelper.addCharacter("Kai", myBook);
+        //myDBHelper.addCharacter("Domian", myBook);
+        //myDBHelper.addCharacter("Austin", myBook);
+
+        System.out.println("ALL CHARACTERS ADDED");
 
         //Dummy Data
         try{
-            myBook.getBookFromDB();
-        }catch (Exception E) { System.out.println("MainActivity -> Unhandled JSON Error"); }
+            getBookFromDB(myBook);
+        }catch (Exception E) {
+            System.out.println("MainActivity -> Unhandled JSON Error");
+        }
+
+        //SYSTEM.OUT
+        myBook.printBook();
 
         // Define view fragments
         AllCharFragment charFragment = new AllCharFragment();
@@ -96,6 +104,21 @@ public class MainActivity extends Activity {
     // MISCELLANEOUS FUNCTIONS
     public static Book getMyBook(){
         return myBook;
+    }
+
+    //Database retrieving functions
+    public void getBookFromDB(Book book) throws JSONException{
+        //Takes in an array of JSON data from the Database and converts it to hashmap of characters
+        Cursor bookDB = myDBHelper.getBook(book.name);
+        bookDB.moveToFirst();
+        for(int i=0; i < bookDB.getCount(); i++){
+            String nuCharName = bookDB.getString(1);
+            String jsonData = bookDB.getString(3);
+            Character nuChar = new Character(nuCharName);
+            nuChar.relationships = myDBHelper.stringToJSON(jsonData);
+            book.allCharaters.put(nuChar.name, nuChar);
+            bookDB.moveToNext();
+        }
     }
 
 }

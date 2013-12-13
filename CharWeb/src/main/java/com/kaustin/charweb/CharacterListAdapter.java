@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Created by kaustin on 12/9/13.
  */
-public class CharacterListAdapter extends ArrayAdapter<Character> {
+public class CharacterListAdapter extends ArrayAdapter<String> {
     private final Context context;
-    private final List<Character> characters;
+    private final List<String> characters;
 
-    public CharacterListAdapter(Context context, List<Character> characters){
+    public CharacterListAdapter(Context context, List<String> characters){
         super(context, R.layout.search_item, characters);
         this.context = context;
         this.characters = characters;
@@ -42,9 +42,9 @@ public class CharacterListAdapter extends ArrayAdapter<Character> {
             holder = (ConnectionItemHolder) connectionRow.getTag();
         }
 
-        Character item = characters.get(position);
+        String item = characters.get(position);
 
-        holder.charName.setText(item.name);
+        holder.charName.setText(item);
 
         return connectionRow;
     }

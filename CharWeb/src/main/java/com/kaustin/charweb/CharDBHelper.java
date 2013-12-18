@@ -63,7 +63,6 @@ public class CharDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_CHARACTERS);
         db.execSQL(CREATE_TABLE_USER);
-        System.out.println("DATABASES CREATED");
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -87,19 +86,50 @@ public class CharDBHelper extends SQLiteOpenHelper {
     }
 
     //UTILITY FUNCTIONS FOR THE DBS
-    public void addCharacter(String name, Book book){
-        //Adds a book to the Database
+    public void deleteCharacter(Book book, String charName){
+        //Deletes specified character from the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        String bookName = book.name;
+        String corTo = FeedEntry.COLUMN_NAME + "= '" + charName + "' AND "
+                + FeedEntry.COLUMN_BOOK + "= '" + bookName + "'";
+
+        db.delete(FeedEntry.TABLE_CHARACTERS, corTo, null);
+    }
+
+
+    public void updateCharacter(Book book, String charName) throws JSONException{
+        //Updates the character (i.e. if there is a new relationship) in the database
+        SQLiteDatabase db = this.getWritableDatabase();
+        String data = jsonToString(book.allCharaters.getJSONObject(charName));
+        String bookName = book.name;
+        String corTo = FeedEntry.COLUMN_NAME + "= '" + charName + "' AND "
+                + FeedEntry.COLUMN_BOOK + "= '" + bookName + "'";
+
+        //Making the new data
+        ContentValues nuData = new ContentValues();
+        nuData.put(FeedEntry.COLUMN_NAME, charName);
+        nuData.put(FeedEntry.COLUMN_BOOK, bookName);
+        nuData.put(FeedEntry.COLUMN_DATA, data);
+
+        db.update(FeedEntry.TABLE_CHARACTERS, nuData, corTo, null);
+
+    }
+
+    public void addCharacter(Book book, String charName) throws JSONException{
+        //Adds a character to the Database
         SQLiteDatabase db = this.getWritableDatabase();
 
+        String data = jsonToString(book.allCharaters.getJSONObject(charName));
+
         ContentValues values = new ContentValues();
-        values.put(FeedEntry.COLUMN_NAME, name);       //Name of the Character
+        values.put(FeedEntry.COLUMN_NAME, charName);       //Name of the Character
         values.put(FeedEntry.COLUMN_BOOK, book.name);    //Name of the "Book"
-        values.put(FeedEntry.COLUMN_DATA, jsonToString(new JSONObject()));  //Initialize empty relationship list
+        values.put(FeedEntry.COLUMN_DATA, data);  //Initialize empty relationship list
 
         // insert row
         long newRowId = db.insert(FeedEntry.TABLE_CHARACTERS, null, values);
     }
-    public Cursor getCharatcer(String name){
+    public Cursor getCharacter(String name){
         //Getting the query of the specified character
         String[] allCols = {FeedEntry._ID,
                 FeedEntry.COLUMN_NAME,

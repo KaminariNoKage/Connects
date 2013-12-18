@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:background="@color/char_white">
+
+    <Button
+        android:id="@+id/newBook"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/editBooks_button"/>
+    <Button
+        android:id="@+id/setCredentials"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/cred_button"
+        android:layout_below="@+id/newBook"/>
+    <Button
+        android:id="@+id/sync"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/sync_button"
+        android:layout_below="@+id/setCredentials"/>
+    <Button
+        android:id="@+id/cancel"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/cancel_button"
+        android:layout_below="@+id/sync"/>
+
+</RelativeLayout>

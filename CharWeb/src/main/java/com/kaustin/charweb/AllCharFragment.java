@@ -26,6 +26,7 @@ public class AllCharFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         try {
+            curBook = MainActivity.myBook;
             allChar = curBook.bookToChar();
         }catch (Exception E){ System.out.println("CANNOT CONVERT BOOK TO LIST"); }
 
@@ -37,16 +38,19 @@ public class AllCharFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.allchar_fragment, null);
 
+        //Setting the book title
+        TextView bookName = (TextView) v.findViewById(R.id.currentBook);
+        bookName.setText(MainActivity.myBook.name);
+
         // Set up the ArrayAdapter for the feedList
         CharacterListAdapter charListAdapter = new CharacterListAdapter(this.getActivity(), allChar);
         ListView charList = (ListView) v.findViewById(R.id.characterResults);
         charList.setAdapter(charListAdapter);
 
-        System.out.println("PAGE LOADED");
         charList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.print("CLICKED ME " + i);
+
                 //Getting title (id) of what is clicked
                 TextView textView = (TextView) view.findViewById(R.id.charName);
                 String name = textView.getText().toString();

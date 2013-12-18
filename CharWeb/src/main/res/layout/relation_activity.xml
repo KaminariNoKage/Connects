@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:id="@+id/relationNameView"
+        android:text="@string/tempText"
+        android:textSize="@dimen/largeText"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:id="@+id/character"
+        android:text="@string/tempText"
+        android:textSize="@dimen/largeText"
+        android:textColor="@color/char_darkgrey"
+        android:layout_alignParentRight="true"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width = "fill_parent"
+        android:layout_height = "2dp"
+        android:background = "@color/char_darkgrey"
+        android:layout_below="@+id/relationNameView"
+        />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:id="@+id/relationTypeView"
+        android:text="@string/tempText"
+        android:textSize="@dimen/largeText"
+        android:layout_below="@+id/line"
+        android:layout_alignParentLeft="true"/>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/del_button"
+        android:text="@string/delete_button"
+        android:layout_below="@+id/relationTypeView"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

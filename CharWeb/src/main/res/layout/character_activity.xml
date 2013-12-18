@@ -7,7 +7,7 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:id="@+id/charName"
+        android:id="@+id/character"
         android:text="@string/tempText"
         android:textSize="@dimen/largeText"
         android:layout_centerHorizontal="true"/>
@@ -16,15 +16,23 @@
         android:id="@+id/line"
         android:layout_width = "fill_parent"
         android:layout_height = "2dp"
-        android:background = "@color/char_blue"
-        android:layout_below="@+id/charName"
+        android:background = "@color/char_darkgrey"
+        android:layout_below="@+id/character"
         />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/del_button"
+        android:text="@string/delete_button"
+        android:layout_below="@+id/line"
+        android:layout_alignParentRight="true"/>
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/searchResults"
-        android:layout_below="@+id/line"
+        android:id="@+id/characterResults"
+        android:layout_below="@+id/del_button"
         android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:layout_margin="@dimen/activity_vertical_margin"
     android:padding="@dimen/activity_horizontal_margin" android:background="@color/char_white">
 
@@ -19,7 +19,9 @@
         android:lines="8"
         android:background="@color/char_grey"
         android:layout_below="@+id/addTop"
-        android:layout_margin="@dimen/activity_vertical_margin"/>
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:padding="2dp"
+        android:gravity="top|left"/>
 
     <View
         android:id="@+id/line"

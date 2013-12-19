@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/char_white"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <Button
+        android:id="@+id/dismiss"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/dismiss_button"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/booktitle"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/dismiss"
+        android:text="@string/tempText"
+        android:textSize="@dimen/largeText"
+        android:padding="@dimen/activity_horizontal_margin"/>
+    <Button
+        android:id="@+id/activateBook"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/activate_button"
+        android:layout_below="@+id/booktitle"/>
+    <View
+        android:id="@+id/line"
+        android:layout_width = "2dp"
+        android:layout_height = "@dimen/largeText"
+        android:layout_below="@+id/textField"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/changeBookName"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/activateBook"
+        android:layout_toLeftOf="@+id/line"
+        android:text="@string/change_name"/>
+    <Button
+        android:id="@+id/del_button"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/activateBook"
+        android:layout_toRightOf="@+id/line"
+        android:text="@string/delete_button"/>
+
+</RelativeLayout>

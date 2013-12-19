@@ -48,17 +48,7 @@ public class CharacterActivity extends Activity {
             JSONObject relations = getCharFromDB(thischarname);
 
             //Converts JSON into list of Relationships
-            relationList = new ArrayList<Relation>();
-            Iterator<String> iter = relations.keys();
-            String key, rone;
-
-            while (iter.hasNext()) {
-                key = iter.next();
-                //Get the value
-                rone = relations.getString(key);
-                Relation nuRel = new Relation(key, rone);
-                relationList.add(nuRel);
-            }
+            relationList = charToRel(relations);
 
             // Set up the ArrayAdapter for the relationship list
             RelationListAdapter charListAdapter = new RelationListAdapter(this, relationList);
@@ -131,10 +121,20 @@ public class CharacterActivity extends Activity {
      }
 
 
-    /*public List<Relation> charToRel(JSONObject tChar)throws JSONException {
+    public List<Relation> charToRel(JSONObject tChar)throws JSONException {
+        List<Relation> nuCharList = new ArrayList<Relation>();
+        Iterator<String> iter = tChar.keys();
+        String key, rone;
 
-        //return nuCharList;
-    }*/
+        while (iter.hasNext()) {
+            key = iter.next();
+            //Get the value
+            rone = tChar.getString(key);
+            Relation nuRel = new Relation(key, rone);
+            nuCharList.add(nuRel);
+        }
+        return nuCharList;
+    }
 
     /***
      * FOR THE SETTINGS MENU AT THE TOP OF THE APP
@@ -167,6 +167,13 @@ public class CharacterActivity extends Activity {
         HowToDialog howto = new HowToDialog(CharacterActivity.this);
         howto.show();
     }
+
+    //Creating MISC Dialog
+    public void showMiscDialog(){
+        MiscDialog misc = new MiscDialog(CharacterActivity.this);
+        misc.show();
+    }
+
     //Handling Clicking MENU items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -175,16 +182,14 @@ public class CharacterActivity extends Activity {
             case R.id.action_add:
                 showAddDialog();
                 //Set the character as part of the first portion of the text
-                //EG: "KAI >> "
+                //EG: "KAI @ "
                 return true;
-            case R.id.action_howto:
+            /*case R.id.action_howto:
                 showHowToDialog();
-                //Set the character as part of the first portion of the text
-                //EG: "KAI >> "
-                return true;
-            /*case R.id.action_settings:
-                //Things
                 return true;*/
+            case R.id.action_settings:
+                showMiscDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

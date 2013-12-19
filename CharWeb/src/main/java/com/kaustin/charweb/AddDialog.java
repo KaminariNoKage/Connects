@@ -29,7 +29,7 @@ public class AddDialog extends AlertDialog {
     public void onCreate(Bundle savedInstanceState){
         if (this.prompt != null){
             EditText textBox = (EditText)findViewById(R.id.textField);
-            textBox.setText(this.prompt + " >> ");
+            textBox.setText(this.prompt + " @ ");
         }
 
         Button submit = (Button)findViewById(R.id.submitRel);
@@ -65,18 +65,18 @@ public class AddDialog extends AlertDialog {
         relType = "Unknown";
 
         //Step #1, get the name of the character the user has entered
-        // User enters in A >> B, so parse it to be [A,B]
-        if (input.contains(">>")){
-            tokens = input.split(">>");
+        // User enters in A @ B, so parse it to be [A,B]
+        if(input.contains("@")){
+            tokens = input.split("@");
 
             charName = tokens[0].trim();
             relBlock = tokens[1].trim();
             addedChar.name = charName;
 
             //Step #2, get the name of the relation and the relationship type
-            // User enters in B = C, so parse it to be [B, C]
-            if (relBlock.contains("=")){
-                tolkens = relBlock.split("=");
+            // User enters in B // C, so parse it to be [B, C]
+            if (relBlock.contains("//")){
+                tolkens = relBlock.split("//");
 
                 relName = tolkens[0].trim();
                 relType = tolkens[1].trim();

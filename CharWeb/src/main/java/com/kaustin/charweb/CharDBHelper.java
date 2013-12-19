@@ -8,8 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,6 +32,7 @@ public class CharDBHelper extends SQLiteOpenHelper {
         public static final String TABLE_USER = "userinfo";
         public static final String COLUMN_USER = "username";    //The user's username
         public static final String COLUMN_PASSWORD = "password";    //The user's password
+        public static final String COLUMN_CURBOOK = "myBook";   //The current book of the user
         public static final String COLUMN_MYBOOKS = "myBooks";  //List of the books
     }
 
@@ -46,6 +51,7 @@ public class CharDBHelper extends SQLiteOpenHelper {
                     FeedEntry._ID + " INTEGER PRIMARY KEY," +
                     FeedEntry.COLUMN_USER + TEXT_TYPE + COMMA +
                     FeedEntry.COLUMN_PASSWORD + TEXT_TYPE + COMMA +
+                    FeedEntry.COLUMN_CURBOOK + TEXT_TYPE + COMMA +
                     FeedEntry.COLUMN_MYBOOKS + TEXT_TYPE + " )";
 
     private static final String DELETE_BOOKS_DB =
@@ -84,8 +90,190 @@ public class CharDBHelper extends SQLiteOpenHelper {
         JSONObject toJSON = new JSONObject(string);
         return toJSON;
     }
+    public String arrlistToString(List<String> arr) throws JSONException {
+        //Convert to JSON, then to string
+        JSONObject allbooks = new JSONObject();
+        allbooks.put("allbooks", new JSONArray(arr));
+        String arrString = allbooks.toString();
+        return arrString;
+    }
+    public ArrayList<String> stringToArrlist(String string) throws JSONException{
+        JSONObject toArr = new JSONObject(string);
+        ArrayList<String> bookNames = new ArrayList<String>();
+        JSONArray jArr = toArr.optJSONArray("allbooks");
+        for (int i=0; i < jArr.length(); i++){
+            bookNames.add(jArr.get(i).toString());
+        }
+        return bookNames;
+    }
 
-    //UTILITY FUNCTIONS FOR THE DBS
+    //UTILITY FUNCTIONS FOR THE BOOK
+    public void editBookOfCharacters(String oldName, String nuName){
+        try{
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            String corTo = FeedEntry.COLUMN_BOOK + "= '" + oldName + "'";
+
+            ContentValues values = new ContentValues();
+            values.put(FeedEntry.COLUMN_BOOK, nuName);       //New Book name
+
+            db.update(FeedEntry.TABLE_CHARACTERS, values, corTo, null);
+
+            db.close();
+        }catch (Exception E){ System.out.println("ERROR IN CharDBHelper.editBookOfCharacters"); }
+    }
+
+    public void deleteBook(String bookName){
+        try{
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            //Step#1, Delete from the main list of books
+            Cursor c = db.rawQuery("SELECT * FROM " + FeedEntry.TABLE_USER, null);
+
+            c.moveToFirst();
+
+            String curBook = c.getString(3);
+            String curBookList = c.getString(4);
+
+            List<String> allBooks = stringToArrlist(curBookList);
+            for (int i=0; i < allBooks.size(); i++){
+                if (allBooks.get(i).toString().equals(bookName)){
+                    allBooks.remove(i);
+                    break;
+                }
+            }
+
+            //Step#2, If the book is the current book, pick the first book from the fixed array
+            //And set the new book to equal that
+            if (curBook.equals(bookName)){
+                curBook = allBooks.get(0).toString();
+            }
+
+            String corTo = FeedEntry._ID + "= '" + c.getInt(0) + "'";
+
+            //Step#3, Update the DB
+            //Making the new data
+            ContentValues values = new ContentValues();
+            values.put(FeedEntry.COLUMN_USER, "");       //Name of the User
+            values.put(FeedEntry.COLUMN_PASSWORD, "");    //Password (for future syncing)
+            values.put(FeedEntry.COLUMN_CURBOOK, curBook);  //Name of the current book
+            values.put(FeedEntry.COLUMN_MYBOOKS, arrlistToString(allBooks));     //Name of the booklist
+
+            db.update(FeedEntry.TABLE_USER, values, corTo, null);
+            c.close();
+
+            //Step #4, Delete all the book's characters from the DB
+            String delTo = FeedEntry.COLUMN_BOOK + "= '" + bookName + "'";
+            db.delete(FeedEntry.TABLE_CHARACTERS, delTo, null);
+
+            db.close();
+
+        }catch (Exception E){ System.out.println("ERROR IN CharDBHelper.deleteBook"); }
+    }
+
+    public void setCurrentBook(String nuBook){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + FeedEntry.TABLE_USER, null);
+
+        c.moveToFirst();
+        int id = c.getInt(0); //Get the ID
+        String allBooks = c.getString(4);
+
+        String corTo = FeedEntry._ID + "= " + id + "";
+
+        //Making the new data
+        ContentValues values = new ContentValues();
+        values.put(FeedEntry.COLUMN_USER, "");       //Name of the User
+        values.put(FeedEntry.COLUMN_PASSWORD, "");    //Password (for future syncing)
+        values.put(FeedEntry.COLUMN_CURBOOK, nuBook);  //Name of the current book
+        values.put(FeedEntry.COLUMN_MYBOOKS, allBooks);     //Name of the booklist
+
+        db.update(FeedEntry.TABLE_USER, values, corTo, null);
+        c.close();
+        db.close();
+        MainActivity.myBook.name = nuBook;
+    }
+
+    public String getCurrentBook(){
+        //Gets the current book from TABLE_USER
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Getting the cursor
+        Cursor c = db.rawQuery("SELECT * FROM " + FeedEntry.TABLE_USER, null);
+
+        if(c.getCount() == 0){
+            //If there is nothing in the database, add a new user row
+            addNewUser();
+            //Get the query again
+            c = db.rawQuery("SELECT * FROM " + FeedEntry.TABLE_USER, null);
+        }
+
+        c.moveToFirst();
+        String curBook = c.getString(3);
+        c.close();
+        db.close();
+        return curBook;
+    }
+
+    public ArrayList<String> getAllBooks(){
+        ArrayList<String> allBooks = new ArrayList<String>();
+        try{
+        //Gets the current book from TABLE_USER
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Getting the cursor
+        Cursor c = db.rawQuery("SELECT * FROM " + FeedEntry.TABLE_USER, null);
+
+        c.moveToFirst();
+
+        String curBook = c.getString(4);
+        allBooks = stringToArrlist(curBook);
+
+        c.close();
+        db.close();
+        }catch (Exception E) { System.out.println("ERROR: CharDBHelper.getAllBooks"); }
+
+        return allBooks;
+    }
+
+    public void editBookList(String curBookName, List<String> allBooks){
+        //Edits the book list in the database
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            String bookList = arrlistToString(allBooks);
+            String corTo = FeedEntry.COLUMN_CURBOOK + "= '" + curBookName + "'";
+
+            ContentValues values = new ContentValues();
+            values.put(FeedEntry.COLUMN_USER, "");       //Name of the User
+            values.put(FeedEntry.COLUMN_PASSWORD, "");    //Password (for future syncing)
+            values.put(FeedEntry.COLUMN_CURBOOK, curBookName);  //Name of the current book
+            values.put(FeedEntry.COLUMN_MYBOOKS, bookList);     //Name of the booklist
+
+            db.update(FeedEntry.TABLE_USER, values, corTo, null);
+
+        } catch (Exception E){ System.out.println("ERROR IN CharDBHelper.editBookList"); }
+    }
+
+    public void addNewUser(){
+        try {
+        //Adds a new User to the Database, NOTE: This is a default function
+        //The actual username is not set, only the book name
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<String> prelim = new ArrayList<String>();
+        prelim.add("myBook");
+
+        ContentValues values = new ContentValues();
+        values.put(FeedEntry.COLUMN_USER, "");       //Name of the User
+        values.put(FeedEntry.COLUMN_PASSWORD, "");    //Password (for future syncing)
+        values.put(FeedEntry.COLUMN_CURBOOK, "myBook");  //By default, add the user
+        values.put(FeedEntry.COLUMN_MYBOOKS, arrlistToString(prelim));
+
+        // insert row
+        long newRowId = db.insert(FeedEntry.TABLE_USER, null, values);
+
+        }catch (Exception E){ System.out.println( "UNABLE TO ADD NEW USER" ); }
+    }
+
+    //UTILITY FUNCTIONS FOR THE CHARACTERS
     public void deleteCharacter(Book book, String charName){
         //Deletes specified character from the database
         SQLiteDatabase db = this.getWritableDatabase();

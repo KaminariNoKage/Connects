@@ -13,15 +13,21 @@
     <string name="search_button">Search</string>
     <string name="submit_button">Submit</string>
     <string name="add_button">Add</string>
+    <string name="addbook_button">New Book</string>
+    <string name="activate_button">Activate</string>
     <string name="editBooks_button">Edit My Books</string>
+    <string name="edit_button">Edit</string>
+    <string name="change_name">Change Name</string>
     <string name="cred_button">Set Username/Password</string>
     <string name="sync_button">Sync</string>
     <string name="cancel_button">Cancel</string>
     <string name="delete_button">Delete</string>
     <string name="dismiss_button">Dismiss</string>
 
+    <!--TITLES, ETC.-->
+    <string name="mybooks_title">My Books</string>
     <string name="howto_text">Suppose B is the friend of A. To connect the two,
-    simple tap "Add" and type in: A >> B = friend . The connection will then be established!
-        You can also type in just "A" or "A >> B" and default connections will be set.</string>
+    simple tap "Add" and type in: A @ B // friend . This will establish the character A, with a relation
+        to character B. You can also type in just "A" or "A @ B" and default connections will be set.</string>
 
 </resources>

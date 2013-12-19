@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/currentBook"
+        android:text="@string/mybooks_title"
+        android:textSize="@dimen/largeText"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_centerHorizontal="true"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width = "fill_parent"
+        android:layout_height = "2dp"
+        android:background = "@color/char_darkgrey"
+        android:layout_below="@+id/currentBook"
+        />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/add_button"
+        android:text="@string/addbook_button"
+        android:layout_below="@+id/line"
+        android:layout_alignParentRight="true"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookResults"
+        android:layout_below="@+id/add_button"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>

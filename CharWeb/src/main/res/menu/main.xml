@@ -6,12 +6,12 @@
         android:title="@string/action_add"
         android:orderInCategory="100"
         android:showAsAction="always" />
-    <item android:id="@+id/action_howto"
+    <!--<item android:id="@+id/action_howto"
         android:title="@string/action_howto"
         android:orderInCategory="100"
-        android:showAsAction="always" />
-    <!--<item android:id="@+id/action_settings"
+        android:showAsAction="always" />-->
+    <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="always" />-->
+        android:showAsAction="always" />
 </menu>

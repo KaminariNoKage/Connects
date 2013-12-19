@@ -15,7 +15,7 @@
         android:layout_width="fill_parent"
         android:id="@+id/oneWayRel"
         android:layout_below="@+id/relationName"
-        android:textSize="@dimen/mediumText"
+        android:textSize="@dimen/midLargeText"
         android:textColor="@color/char_darkgrey"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:text="@string/tempText"/>

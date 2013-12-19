@@ -3,6 +3,7 @@ package com.kaustin.charweb;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,32 +26,43 @@ public class MiscDialog extends AlertDialog {
 
     public void onCreate(Bundle savedInstanceState){
         //Setting the buttons
-        Button newBook = (Button)findViewById(R.id.newBook);
-        Button setCred = (Button)findViewById(R.id.setCredentials);
-        Button sync = (Button)findViewById(R.id.sync);
+        Button howto = (Button) findViewById(R.id.howto);
+        Button editBook = (Button)findViewById(R.id.editBook);
+        //Button setCred = (Button)findViewById(R.id.setCredentials);
+        //Button sync = (Button)findViewById(R.id.sync);
         Button cancel = (Button)findViewById(R.id.cancel);
 
         //Opens up New Book dialog
-        newBook.setOnClickListener(new View.OnClickListener() {
+        editBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showNewBookDialog();
+                //Go to Edit Book activity
+                Intent in = new Intent(context, BookActivity.class);
+                in.putExtra("bookName", "Current: " + MainActivity.myBook.name);
+                context.startActivity(in);
             }
         });
 
-        //Syncs with the online server given the username and password
-        setCred.setOnClickListener(new View.OnClickListener() {
+        //How to dialog
+        howto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                showHowToDialog();
             }});
 
-        //Opens up New Book dialog
-        sync.setOnClickListener(new View.OnClickListener() {
+        //Syncs with the online server given the username and password
+        /*setCred.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
-            }});
+            }});*/
+
+        //Opens up New Book dialog
+        /*sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }});*/
 
         //Do nothing, just close the Dialog
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -60,10 +72,10 @@ public class MiscDialog extends AlertDialog {
             }});
     }
 
-    //Creating NEW BOOK Dialog
-    public void showNewBookDialog(){
-        NewBookDialog newBook = new NewBookDialog(context);
-        newBook.show();
+    //Creating HowTo Dialog
+    public void showHowToDialog(){
+        HowToDialog howto = new HowToDialog(context);
+        howto.show();
     }
 
     //Creating NEW BOOK Dialog

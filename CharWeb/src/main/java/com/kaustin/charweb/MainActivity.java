@@ -33,10 +33,9 @@ public class MainActivity extends Activity {
         //Database
         myDBHelper = new CharDBHelper(this);
 
-        //Dummy Data
         try{
-            //Dummy Data
-            myBook = new Book("myBook");
+            //Get the current book from the database
+            myBook = new Book(myDBHelper.getCurrentBook());
             getBookFromDB(myBook);
         }catch (Exception E) {
             System.out.println("MainActivity -> Unhandled JSON Error");
@@ -89,11 +88,6 @@ public class MainActivity extends Activity {
         MiscDialog misc = new MiscDialog(MainActivity.this);
         misc.show();
     }
-    //Creating HowTo Dialog
-    public void showHowToDialog(){
-        HowToDialog howto = new HowToDialog(MainActivity.this);
-        howto.show();
-    }
 
     //Handling Clicking MENU items
     @Override
@@ -103,22 +97,18 @@ public class MainActivity extends Activity {
             case R.id.action_add:
                 showAddDialog();
                 return true;
-            case R.id.action_howto:
+            /*case R.id.action_howto:
                 showHowToDialog();
-                return true;
-            /*case R.id.action_settings:
-                showMiscDialog();
                 return true;*/
+            case R.id.action_settings:
+                showMiscDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     // MISCELLANEOUS FUNCTIONS
-    public static Book getMyBook(){
-        return myBook;
-    }
-
     //Database retrieving functions
     public void getBookFromDB(Book book) throws JSONException{
         //Takes in an array of JSON data from the Database and converts it to hashmap of characters
@@ -129,8 +119,6 @@ public class MainActivity extends Activity {
             String jsonData = bookDB.getString(3);
 
             JSONObject charData = myDBHelper.stringToJSON(jsonData);
-
-            System.out.println(charData);
 
             book.allCharaters.put(nuCharName, charData);
             bookDB.moveToNext();
